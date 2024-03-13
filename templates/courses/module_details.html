@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    my course
+{% endblock title %}
+
+{% block content %}
+        {% if request.user.is_admin %}
+    <div class="admin-actions-chapter">
+        <a class="btn btn-sm btn-primary" href=""><i class="fa-solid fa-plus"></i> Add chapter</a>
+    </div>
+    <div class="admin-actions-quiz">
+        <a class="btn btn-sm btn-primary" href="{% url 'quiz:create_quiz' module_id=module.id %}"><i class="fa-solid fa-plus"></i> Add a quiz</a>
+    </div>
+    {% endif %}
+        {% for chapter in chapters %}
+        <div class="chapter"> 
+        <a href="">
+            <div class="container p-2 my-2 border">
+                <h6>chapter {{chapter.chapter_no}}  :  {{chapter.title}}</h6>
+                <p>Total chapters : {{chapter_count.C}}</p>
+                
+            </a>
+            </div>
+            </div>
+        {% endfor %}
+        <br>
+        {% for quiz in quiz %}
+        <div class="chapter"> 
+        <a href="">
+            <div class="container p-2 my-2 border">
+                <h6>Practice Quiz : {{quiz.title}}</h6>
+                
+            </a>
+            </div>
+            </div>
+        {% endfor %}
+        
+{% endblock content %}

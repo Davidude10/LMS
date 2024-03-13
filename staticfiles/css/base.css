@@ -1,0 +1,89 @@
+/* base.css */
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+}
+
+.left-column {
+    width: 25%;
+}
+
+.middle-column {
+    width: 50%;
+}
+
+.right-column {
+    width: 25%;
+}
+
+.course-info-box {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+.vertical-nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.vertical-nav li {
+    margin-bottom: 10px;
+}
+
+.vertical-nav a {
+    text-decoration: none;
+    color: #333;
+}
+
+.active a {
+    color: blue;
+}
+
+.search-bar {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.module-info-box {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.chapter-list {
+    margin-top: 10px;
+}
+
+.chapter-box {
+    margin-bottom: 10px;
+}
+
+.profile-picture {
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.profile-info {
+    margin-bottom: 20px;
+}
+
+.todo-list {
+    margin-bottom: 20px;
+}
+
+.todo-item {
+    margin-bottom: 10px;
+}

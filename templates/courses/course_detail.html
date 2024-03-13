@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    my course
+{% endblock title %}
+
+{% block content %}
+        {% for module in modules %}
+        <div class="module">
+            <a href="">
+            <div class="container p-2 my-2 border">
+                <h6>Module {{module.module_no}}  :  {{module.title}}</h6>
+                <p>Total chapters : {{chapter_count.C}}</p>
+                <div class="progress">
+                    <div class="progress-bar progress-bar active" 
+                                        role="progressbar" aria-valuenow="{{module.progress}}" aria-valuemin="0" aria-valuemax="100" style="width:{{module.progress}}%">{{module.progress}}%
+                    </div>
+                </div>
+            </div>
+            </a>
+            </div>
+        {% endfor %}
+{% endblock content %}

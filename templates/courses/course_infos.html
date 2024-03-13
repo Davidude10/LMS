@@ -1,0 +1,21 @@
+{% extends 'base.html' %}{% load static %}
+{% block content %}
+   <div class="course_list">
+        <div class="row1">
+            <div class="cname">
+                <p>{{Course.title}}</p>
+            </div>
+            <div class="cduration">
+                <p>{{course.duration}}</p>
+            </div>
+        </div>
+        <div class="row2">
+            <p>{{course.summary}}</p>
+               
+               
+        </div>
+        <button style="font-size:20px">Edit<i class="material-icons">edit</i></button>
+    </div>
+
+
+{% endblock content %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% if request.user.is_admin %}
+    <div class="admin-actions">
+        <a class="btn btn-sm btn-primary" href="{% url 'users:student_add' %}"><i class="fa-solid fa-plus"></i> Add Student</a>
+    </div>
+    {% endif %}
+    <br>
+    <div class="students-list">
+        <h2>STUDENT LIST</h2>
+        <br>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Course</th> 
+                    <th>Joining Date</th>
+                    {% if request.user.is_admin %}<th>Action</th>{% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td><a href="{% url 'users:profile_single' pk=student.id %}">{{ student.user.get_full_name }}</a></td>
+                    <td>{{ student.course }}</td>
+                    <td>{{ student.user.date_joined|date:"d/m/Y" }}</td>
+                    {% if request.user.is_admin %}<td> <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle custom-dropdown-btn" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                Select Option
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="{% url 'users:edit_student' pk=student.id %}">Edit</a></li>
+                <li><a class="dropdown-item" href="{% url 'users:delete_student' pk=student.id %}">Delete</a></li>
+            </ul>
+        </div></td>{% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}

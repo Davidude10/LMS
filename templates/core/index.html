@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+{% if request.user.is_admin %}
+<div class="button-box">
+    <a href="{% url 'add_item' %}"><button id="add-news-btn" class="btn btn-primary">Add News</button></a>
+</div>{% endif %}
+<div class="row">
+{% for item in items %}
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{item.title}}</h5>
+                <p class="card-text">{{item.upload_time}}</p>
+                <p class="card-text">{{item.summary}}</p>
+            </div>
+            {% if request.user.is_admin %}
+            <div class="card-footer">
+                <a href="{% url 'delete_post' pk=item.id %}" class="btn btn-danger">Delete News</a>
+                <a href="{% url 'edit_post' pk=item.id %}" class="btn btn-primary">Edit News</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% endfor %}
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div id="Home">
+    <div class="container">
+        <div class="col_1">
+            <!-- Profile Picture -->
+            <div class="avatar-box">
+                <div class="avatar">
+                    <img src="{{ request.user.get_picture }}" alt="Profile Picture">
+                </div>
+            </div>
+
+            <!-- User Info -->
+            <div class="col">
+                <h4>{{ request.user.get_full_name }}</h4>
+                <p>Email: {{ request.user.email }}</p>
+                <p>Phone: {{ request.user.phone }}</p>
+                <p>Address: {{ request.user.address }}</p>
+                <p>User Role: {{ request.user.get_user_role }}</p>
+            </div>
+        </div>
+
+        <!-- Courses (if user is a student) -->
+        {% if courses %}
+        <div class="col_1">
+            <h6>Your Courses:</h6>
+            <ul>
+                {% for course in courses %}
+                <li>{{ course.title }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

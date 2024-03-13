@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentorow</title>
+    <link rel="icon" href="{% static 'images/favicon.png' %}">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome CSS -->
+    <script src="https://kit.fontawesome.com/95f9a0a9bb.js" crossorigin="anonymous"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="{% static 'images/l.png' %}" alt="logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <form action="{% url 'logout' %}" method="post" class="d-flex">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Log Out</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 left">
+                <div class="left-content">
+                    {% if request.user.is_student %}
+                    <p id="rcorners1"><b>{{course.title}} </b></p>
+                    <ul class="nav flex-column">
+                        <li class="nav-item"><a class="nav-link active" href="{% url 'home' %}">News and Events</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'courses:course_detail' %}">Course Material</a></li>
+                        <li class="nav-item"><a class="nav-link" href="">Assessment</a></li>
+                        <li class="nav-item"><a class="nav-link" href="chat.html">Chat</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'courses:course_info' %}">Course info</a></li>
+                    </ul>
+                    {% elif request.user.is_admin %}
+                    <p id="rcorners1"><b>{{course.title}} </b></p>
+                    <ul class="nav flex-column">
+                        <li class="nav-item"><a class="nav-link active" href="{% url 'home' %}">News and Events</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'users:student_list' %}">Students</a></li>
+                        <li class="nav-item"><a class="nav-link" href="">Assessment</a></li>
+                        <li class="nav-item"><a class="nav-link" href="">Complete exams</a></li>
+                        <li class="nav-item"><a class="nav-link" href="">Chat</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'courses:course_list' %}">Courses</a></li>
+                    </ul>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="search">
+                    <input type="text" id="search" class="form-control" placeholder="Search Your Chapters">
+                </div>
+                <div class="content">
+                    
+                            {% block content %}{%endblock content %}
+                       
+                </div>
+            </div>
+           
+            <div class="col-lg-3 position-relative right">
+                <i class="fa fa-bell bell-icon position-absolute top-20 end-20"></i>
+                <br>
+                <div class="personal-container">
+                    <div class="personal">
+                        <img src="{% static '/images/login/student.png' %}" alt="Student" style="width:200px" class="center"><br>
+                        <p><b>{{request.user.get_full_name}}</b></p>
+                        <p>{{course.title}}</p>
+                    </div>
+                </div>
+                {% if request.user.is_student %}
+                <div class="todo">
+                    <p><b>To Do List</b></p>
+                </div>
+                <hr>
+                <div class="col-sm-1">
+                    <i class="fa fa-calendar center" style="font-size:32px;" ></i>
+                </div>
+                <div class="col-sm-8" style="background-color:rgb(255, 255, 255);">Minor Project 1<br><p>Notion| Due:8.00pm</div></p>
+            </div>{% endif %}
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block header %}
+    <h2>Log in to your account.</h2>
+{% endblock header %}
+
+{% block content %}
+
+    <form action="{% url 'users:login' %}" class="form" method="post">
+        {% csrf_token %}
+        
+
+        
+            <button name="submit" class="btn btn-primary">Log in</button>
+        
+
+        <input type="hidden" name="next" value="{% url 'courses:course' %}" />
+    </form>
+{% endblock content %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    create quiz
+{% endblock title %}
+
+{% block content %}
+     <!-- add_choices.html -->
+<h2>{{ quiz.title }}</h2>
+<h3>{{ question.text }}</h3>
+<form method="post">
+  {% csrf_token %}
+  {{ choice_form.as_p }}
+  <button type="submit">Add Choice</button>
+</form>
+
+{% endblock content %}
