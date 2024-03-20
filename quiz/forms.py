@@ -1,18 +1,12 @@
-# forms.py
-from django import forms
-from .models import Quiz, Question, Choice
+from django.forms import ModelForm
+from .models import *
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
-class QuizForm(forms.ModelForm):
-    class Meta:
-        model = Quiz
-        fields = ['course', 'module', 'title']  # Add other fields as needed
+from users.models import User
+from .models import QuesModel
 
-class QuestionForm(forms.ModelForm):
+class addQuestionform(ModelForm):
     class Meta:
-        model = Question
-        fields = ['text', 'mark']  # Add other fields as needed
-
-class ChoiceForm(forms.ModelForm):
-    class Meta:
-        model = Choice
-        fields = ['text', 'is_correct']  # Add other fields as needed
+        model=QuesModel
+        fields="__all__"

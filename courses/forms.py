@@ -14,6 +14,8 @@ class CourseForm(forms.ModelForm):
         widget=forms.NumberInput(attrs={"class": "form-control", "placeholder": "Duration (Months)"}),
         label="Duration (Months)",
     )
+    image=forms.ImageField(widget=forms.ClearableFileInput(attrs={"class": "form-control"}),
+        label="Image",)
     summary = forms.CharField(
         widget=forms.Textarea(attrs={"class": "form-control", "placeholder": "Summary"}),
         label="Summary",
@@ -22,7 +24,7 @@ class CourseForm(forms.ModelForm):
   
     class Meta:
         model = Course
-        fields = ['title', 'duration', 'summary']
+        fields = ['title', 'duration','image' ,'summary']
 
 class ModuleForm(forms.ModelForm):
     course=forms.ModelChoiceField(

@@ -23,7 +23,7 @@ class CourseManager(models.Manager):
 class Course(models.Model):
     title = models.CharField(max_length=200)
     duration = models.IntegerField(null=True, default=0)
-    
+    image=models.ImageField(upload_to="course_icon/%Y/%m/%d/", default="default.png", null=True)
     date_added = models.DateTimeField(auto_now_add=True)
     summary = models.TextField(null=True, blank=True)
     objects = CourseManager()

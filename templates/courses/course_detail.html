@@ -5,19 +5,57 @@
 {% endblock title %}
 
 {% block content %}
-        {% for module in modules %}
-        <div class="module">
-            <a href="">
-            <div class="container p-2 my-2 border">
-                <h6>Module {{module.module_no}}  :  {{module.title}}</h6>
-                <p>Total chapters : {{chapter_count.C}}</p>
-                <div class="progress">
-                    <div class="progress-bar progress-bar active" 
-                                        role="progressbar" aria-valuenow="{{module.progress}}" aria-valuemin="0" aria-valuemax="100" style="width:{{module.progress}}%">{{module.progress}}%
+       
+                <div class="row2">
+                    <div class="navs">
+                        <ul>
+                            <li><a href="{% url 'courses:course_detail' %}">Course</a></li>
+                            <li ><a href="#">Assessment</a></li>
+                            <li><a href="#">Result</a></li>
+                        </ul>
                     </div>
                 </div>
+                <section id="course">
+                    <div class="row row3">
+                        <div class="cbox">
+                            <i class="fa fa-book"></i>
+                            <p>Courses: {{courses_count}}</p>
+                        </div>
+                        <div class="cbox">
+                            <i class="fa fa-file"></i>
+                            <p>Modules: {{modules_count}}</p>
+                        </div>
+                        <div class="cbox">
+                            <i class="fa fa-file-text"></i>
+                            <p>Chapter: {{chapters_count}}</p>
+                        </div>
+                    </div>
+                </section><br><br>
+
+                <div class="content">
+                    
+                    <div class="course">
+                        <div class="top">
+                            <h2>Courses</h2>
+                            <a href="{% url 'courses:new_course' %}"> <button type="submit" class="addcou">Add Course</button></a>
+                        </div><br>
+                        <div class="row">
+                        {% for course in courses %}
+                            <div class="col-md-4">
+                                <div class="course-card">
+                                    <img class="card-img" src="{{ course.image.url }}">
+                                    <h6 class="card-body">{{course.title}}</h6>
+                                </div>
+                            </div>
+                
+                           {% endfor %}
+                            
+                        </div>
+                    </div>
+                       
+                </div>
             </div>
-            </a>
-            </div>
-        {% endfor %}
+           
+            
+        
 {% endblock content %}

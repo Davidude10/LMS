@@ -1,14 +1,21 @@
 {% extends 'base.html' %}
-
-{% block title %}
-    create quiz
-{% endblock title %}
-
+ 
 {% block content %}
-  <h2>{{ quiz.title }}</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ question_form.as_p }}
-  <button type="submit">Add Question</button>
-</form>
-{% endblock content %}
+ 
+<div class="jumbotron container row">
+    <div class="col-md-6">
+        <h1>Add Question</h1>
+        <div class="card card-body">
+           <form action="" method="POST">
+              {% csrf_token %}
+                {{form.as_p}}
+                <br>
+             <input type="submit" name="Submit">
+             </form>
+            </div>
+        </div>
+    </div>
+ 
+</div>
+ 
+{% endblock %}

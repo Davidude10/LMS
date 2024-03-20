@@ -59,6 +59,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
+CRISPY_TEMPLATE_PACK = 'bootstrap5'  # Choose the appropriate template pack
 
 ROOT_URLCONF = 'Learning.urls'
 

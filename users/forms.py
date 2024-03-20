@@ -10,6 +10,8 @@ from django.contrib.auth.forms import (
 from django.contrib.auth.forms import PasswordResetForm
 from courses.models import Course
 from .models import User, Student,GENDERS
+import random
+import string
 
 
 
@@ -110,12 +112,16 @@ class StudentAddForm(forms.ModelForm):
         registration_date = int(datetime.now().strftime("%Y")) % 2000
 
         total_students_count = Student.objects.count()
+        random_alphabets = ''.join(random.choices(string.ascii_uppercase, k=4))
+        random_numbers = ''.join(random.choices(string.digits, k=4))
+        random_string = random_alphabets + random_numbers
+
         generated_username = (
             f"ST-{registration_date}-{total_students_count}"
         )
         # Generate a password
         generated_password = (
-            f"S{registration_date}{total_students_count}"
+            f"{random_string}"
         )
 
         user.username = generated_username
@@ -130,7 +136,7 @@ class StudentAddForm(forms.ModelForm):
 
             # Send email with the generated credentials
             send_mail(
-                "Your Django LMS account credentials",
+                "Your Mentorow LMS account credentials",
                 f"Your ID: {generated_username}\nYour password: {generated_password}",
                 settings.EMAIL_HOST_USER,
                 [user.email],
@@ -140,7 +146,7 @@ class StudentAddForm(forms.ModelForm):
         return user
 
 
-class ProfileUpdateForm(UserChangeForm):
+class ProfileUpdateForm(forms.ModelForm):
     email = forms.EmailField(
         widget=forms.TextInput(
             attrs={

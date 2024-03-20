@@ -4,7 +4,7 @@
 <div class="container">
     <h1>{{ title }}</h1>
     <form action="" method="POST">{% csrf_token %}
-                    {{ form|crispy }}
+                    {{ form.as_p }}
                     <input class="btn btn-primary" type="submit" value="Save">
                     <a class="btn" href="{% url 'home' %}" style="float: right;">Cancel</a>
     </form>
