@@ -4,52 +4,23 @@ from .forms import *
 from .models import *
 from django.http import HttpResponse
  
-
-def Quizpage(request):
+def create_quiz(request):
     if request.method == 'POST':
-        print(request.POST)
-        questions=QuesModel.objects.all()
-        score=0
-        wrong=0
-        correct=0
-        total=0
-        for q in questions:
-            total+=1
-            print(request.POST.get(q.question))
-            print(q.ans)
-            print()
-            if q.ans ==  request.POST.get(q.question):
-                score+=10
-                correct+=1
-            else:
-                wrong+=1
-        percent = score/(total*10) *100
-        context = {
-            'score':score,
-            'time': request.POST.get('timer'),
-            'correct':correct,
-            'wrong':wrong,
-            'percent':percent,
-            'total':total
-        }
-        return render(request,'quiz/results.html',context)
+        quiz_form = QuizForm(request.POST)
+        if quiz_form.is_valid():
+            quiz = quiz_form.save()
+            return redirect('quiz:create_questions', quiz_id=quiz.id)
     else:
-        questions=QuesModel.objects.all()
-        context = {
-            'questions':questions
-        }
-        return render(request,'quiz/Quiztake.html',context)
- 
-def addQuestion(request):    
-    if request.user.is_staff:
-        form=addQuestionform()
-        if(request.method=='POST'):
-            form=addQuestionform(request.POST)
-            if(form.is_valid()):
-                form.save()
-                return redirect('/')
-        context={'form':form}
-        return render(request,'quiz/add_questions.html',context)
-    else: 
-        return redirect('home') 
- 
+        quiz_form = QuizForm()
+    return render(request, 'quiz/create_quiz.html', {'quiz_form': quiz_form})
+
+def create_questions(request, quiz_id):
+    quiz = Quiz.objects.get(id=quiz_id)
+    if request.method == 'POST':
+        question_formset = QuestionFormSet(request.POST, instance=quiz)
+        if question_formset.is_valid():
+            question_formset.save()
+            return redirect('courses:modules')
+    else:
+        question_formset = QuestionFormSet(instance=quiz)
+    return render(request, 'quiz/create_questions.html', {'question_formset': question_formset})

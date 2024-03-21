@@ -5,7 +5,9 @@ from django.core.validators import FileExtensionValidator
 from django.db.models.signals import pre_save, post_save, post_delete
 from django.dispatch import receiver
 from .utils import unique_slug_generator
-
+from django.core.exceptions import ValidationError
+from django.db.models import Q
+from django.utils.translation import gettext_lazy as _
 
 class CourseManager(models.Manager):
     def search(self, query=None):
@@ -49,9 +51,15 @@ class Module(models.Model):
 
     class Meta:
         verbose_name_plural = "Module"
+        unique_together = ('course', 'title')
 
     def __str__(self):
         return self.title
+    
+    def clean(self):
+        # Ensure each module is unique to each course
+        if Module.objects.filter(course=self.course, title=self.title).exists():
+            raise ValidationError(_('Module with this title already exists for this course.'))
 
 class Chapter(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE)

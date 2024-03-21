@@ -6,8 +6,9 @@
 
 {% block content %}
        <form method="post">
-  {% csrf_token %}
-  {{ quiz_form.as_p }}
-  <button type="submit">Create Quiz</button>
+    {% csrf_token %}
+    {{ quiz_form.as_p }}
+    <button type="submit">Next</button>
 </form>
+
 {% endblock content %}
