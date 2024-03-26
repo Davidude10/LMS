@@ -492,3 +492,62 @@ courses */
     padding: 20px;
 }
 
+/* settings */
+
+.setting_head
+{
+    text-align: center;
+}
+.row_1
+{
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgb(156, 155, 155);
+    margin: 30px;
+    padding: 20px;
+}
+.deta
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    }
+.deta i 
+{
+    float: right;
+    font-size:24px;
+    color: rgb(78,40,246);
+}
+
+
+
+/* Assessmen
+ */
+
+
+
+
+ .hidden {
+    display: none;
+  }
+  
+  .fcol{
+      
+      place-items: center;
+      background: transparent;
+      box-shadow: 0 0 10px black;
+      border-radius: 10px;
+      width: 40%;
+  }
+  #form1,#form2,#form3,#form4{
+      padding: 30px;
+      text-align: center;
+  }
+  #form1 input[type="text"],#form2 input[type="text"],#form3 input[type="text"],#form4 input[type="text"]{
+      width: 70%; 
+  }
+  #form1 select,#form2 select,#form3 select,#form4 select {
+      width: 70%; 
+  }
+  #form1 input[type="submit"],#form2 input[type="submit"],#form3 input[type="submit"],#form4 input[type="submit"] {
+      width: auto; 
+  }

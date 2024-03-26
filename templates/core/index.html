@@ -13,6 +13,12 @@
                 <h5 class="card-title">{{item.title}}</h5>
                 <p class="card-text">{{item.upload_time}}</p>
                 <p class="card-text">{{item.summary}}</p>
+                {% if item.image %}
+                    <img src="{{ item.image.url }}" class="card-img-top" alt="Image">
+                {% endif %}
+                {%if item.links %}
+                <a href="{{item.links}}" ><p class="card-text">{{item.links}}</p></a>
+                {% endif %}
             </div>
             {% if request.user.is_admin %}
             <div class="card-footer">

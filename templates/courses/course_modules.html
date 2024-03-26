@@ -7,12 +7,12 @@
 {% block content %}
         {% if request.user.is_admin %}
     <div class="admin-actions">
-        <a class="btn btn-sm btn-primary" href="{% url 'courses:new_Module'  course_id=course.id %}"><i class="fa-solid fa-plus"></i> Add Module</a>
+         <a class="btn btn-sm btn-primary" href="{% url 'courses:new_Module'  course_id=course.id %}"><i class="fa-solid fa-plus"></i> Add Module</a> 
     </div>
     {% endif %}
         {% for module in modules %}
         <div class="module"> 
-        <a href="{% url 'courses:module' pk=module.id %}">
+        {% comment %} <a href="{% url 'courses:module' pk=module.id %}"> {% endcomment %}
             <div class="container p-2 my-2 border">
                 <h6>Module {{module.module_no}}  :  {{module.title}}</h6>
                 <p>Total chapters : {{chapter_count.C}}</p>

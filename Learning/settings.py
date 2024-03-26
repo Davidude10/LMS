@@ -48,6 +48,7 @@ PROJECT_APPS = [
 # Combine all apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'  # Choose the appropriate template pack (e.g., 'bootstrap4', 'bootstrap5')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

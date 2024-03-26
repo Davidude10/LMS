@@ -52,6 +52,18 @@ def student_profile(request, pk):
 
 
 
+def settings_page(request):
+    # Retrieve details of the logged-in user
+    user = request.user
+
+    # Pass the user details to the template
+    context = {
+        'user': user,
+    }
+
+    return render(request, 'settings.html', context)
+
+
 
 
 

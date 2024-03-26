@@ -42,3 +42,27 @@ def new_course(request):
 
     context = {'form': form}
     return render(request, 'courses/new_course.html', context)
+
+
+
+def course_modules(request, course_id):
+    course = get_object_or_404(Course, pk=course_id)
+    modules = course.module_set.all()  # Assuming 'Module' is related name in 'Course' model
+    return render(request, 'courses/course_modules.html', {'course': course, 'modules': modules})
+
+def new_Module(request, course_id):
+    # Retrieve the course object based on the course_id
+    course = Course.objects.get(id=course_id)
+
+    if request.method == 'POST':
+        form = ModuleForm(request.POST)
+        if form.is_valid():
+            # Set the course instance before saving the module
+            module = form.save(commit=False)
+            module.course = course
+            module.save()
+            return HttpResponseRedirect('courses:course_modules')  # Redirect to a success URL after adding the module
+    else:
+        form = ModuleForm()
+    
+    return render(request, 'courses/new_Module.html', {'form': form})

@@ -5,10 +5,11 @@
 {% endblock title %}
 
 {% block content %}
-       <form method="post">
-    {% csrf_token %}
-    {{ quiz_form.as_p }}
-    <button type="submit">Next</button>
-</form>
+     <h1>Create Quiz</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ quiz_form.as_p }}
+        <button type="submit">Create Quiz</button>
+    </form>
 
 {% endblock content %}

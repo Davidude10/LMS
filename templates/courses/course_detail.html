@@ -10,7 +10,7 @@
                     <div class="navs">
                         <ul>
                             <li><a href="{% url 'courses:course_detail' %}">Course</a></li>
-                            <li ><a href="#">Assessment</a></li>
+                            <li ><a href="{% url 'quiz:Assessment_detail' %}">Assessment</a></li>
                             <li><a href="#">Result</a></li>
                         </ul>
                     </div>
@@ -41,13 +41,15 @@
                         </div><br>
                         <div class="row">
                         {% for course in courses %}
+                        
                             <div class="col-md-4">
+                            <a href="{% url 'courses:course_modules' course_id=course.id %}">
                                 <div class="course-card">
                                     <img class="card-img" src="{{ course.image.url }}">
                                     <h6 class="card-body">{{course.title}}</h6>
-                                </div>
+                                </div></a>
                             </div>
-                
+                            
                            {% endfor %}
                             
                         </div>

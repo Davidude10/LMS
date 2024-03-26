@@ -1,13 +1,7 @@
 from django.db import models
 from django.db.models import Q
 
-NEWS = "News"
-EVENTS = "Event"
 
-POST = (
-    (NEWS, "News"),
-    (EVENTS, "Event"),
-)
 
 class NewsAndEventsQuerySet(models.query.QuerySet):
     def search(self, query):
@@ -39,9 +33,10 @@ class NewsAndEventsManager(models.Manager):
 class NewsAndEvents(models.Model):
     title = models.CharField(max_length=200, null=True)
     summary = models.TextField(max_length=200, blank=True, null=True)
-    posted_as = models.CharField(choices=POST, max_length=10)
     updated_date = models.DateTimeField(auto_now=True, auto_now_add=False, null=True)
     upload_time = models.DateTimeField(auto_now=False, auto_now_add=True, null=True)
+    links = models.URLField(max_length=200, blank=True, null=True)  # Field for links
+    image = models.ImageField(upload_to='news/', blank=True, null=True,default="default.png")
 
     objects = NewsAndEventsManager()
 

@@ -1,0 +1,93 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+        <div class="row">
+            <div class="cbox" onclick="showForm('form1')">
+                <i class="fa fa-tasks" style="color:red"></i>
+                <p>Quiz</p>
+                
+            </div>
+            <div class="cbox" onclick="showForm('form2')">
+                <i class="fa fa-file-text" style="color: red;"></i>
+                <p>Assignment</p>
+            </div>
+            <div class="cbox" onclick="showForm('form3')">
+                <i class="fa fa-file-code-o" style="color:red"></i>
+                <p>Mini Project</p>
+            </div>
+            <div class="cbox" onclick="showForm('form4')">
+                <i class="fa fa-code" style="color:red"></i>
+                <p>Project</p>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="fcol">
+                <form  action="" method="get" id="form1" class="hidden">
+                    <label for="course">Course:</label>
+                    <select id="course" name="course">
+                        <option value="1">---</option>
+                        <option value="2">UIUX</option>
+                        <option value="3">Graphic designer</option>
+                        <option value="4">Data Science</option>
+                    </select><br><br>
+                    <label for="module">Module:</label>
+                    <input type="text" id="module" name="module"><br><br>
+                    <input class="asubmit" type="submit" value="Submit">
+                </form>
+
+                <form  action="" method="get" id="form2" class="hidden">
+                    <label for="course">Course:</label>
+                    <select id="course" name="course">
+                        <option value="1">---</option>
+                        <option value="2">UIUX</option>
+                        <option value="3">Graphic designer</option>
+                        <option value="4">Data Science</option>
+                    </select><br><br>
+                    <label for="module">Module:</label>
+                    <input type="text" id="module" name="module"><br><br>
+                    <input class="asubmit" type="submit" value="Submit">
+                </form>
+
+                <form  action="" method="get" id="form3" class="hidden">
+                    <label for="course">Course:</label>
+                    <select id="course" name="course">
+                        <option value="1">---</option>
+                        <option value="2">UIUX</option>
+                        <option value="3">Graphic designer</option>
+                        <option value="4">Data Science</option>
+                    </select><br><br>
+                    <label for="module">Module:</label>
+                    <input type="text" id="module" name="module"><br><br>
+                    <input class="asubmit" type="submit" value="Submit">
+                </form>
+
+                <form  action="" method="get" id="form4" class="hidden">
+                    <label for="course">Course:</label>
+                    <select id="course" name="course">
+                        <option value="1">---</option>
+                        <option value="2">UIUX</option>
+                        <option value="3">Graphic designer</option>
+                        <option value="4">Data Science</option>
+                    </select><br><br>
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+            <div class="col-3"></div>
+        </div>
+    </div>
+    <script>
+        function showForm(formId) {
+            var allForms = document.querySelectorAll('.fcol form');
+            allForms.forEach(form => {
+                form.classList.add('hidden');
+            });
+            var formToShow = document.getElementById(formId);
+            formToShow.classList.remove('hidden');
+        }
+    </script>
+    
+{% endblock content %}
