@@ -12,10 +12,10 @@
     {% endif %}
         {% for module in modules %}
         <div class="module"> 
-        {% comment %} <a href="{% url 'courses:module' pk=module.id %}"> {% endcomment %}
+         <a href="{% url 'courses:module' pk=module.id %}">
             <div class="container p-2 my-2 border">
                 <h6>Module {{module.module_no}}  :  {{module.title}}</h6>
-                <p>Total chapters : {{chapter_count.C}}</p>
+                <p>Total chapters : {{module.chapter_count}}</p>
                 <div class="progress">
                     <div class="progress-bar progress-bar active" 
                                         role="progressbar" aria-valuenow="{{module.progress}}" aria-valuemin="0" aria-valuemax="100" style="width:{{module.progress}}%">{{module.progress}}%
