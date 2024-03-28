@@ -1,0 +1,30 @@
+.textabout,.aboutimg{width: auto;margin: 20px;padding: 10px;}
+.rowa{display: flex;flex-direction: row;margin-bottom: 0px;}
+.textabout{line-height:2 ;text-align: justify;}
+.boxtype{
+    text-align: center;
+    width: 350px;
+    padding: 10px;
+    border-radius: 20px;
+    box-sizing: border-box;
+    margin-left:10px;
+    height:auto;
+    border-style:solid; 
+   
+}
+.boxtype p{
+  font-weight: 300;
+  text-align:center;
+  padding:8px;
+  text-align: justify;
+  
+}
+.boxtype.tp-none {
+  transition-property: none;
+}
+.boxtype:is(:hover, :focus) {
+  transform: scale(1.01);
+  background-color: rgb(209, 214, 224);
+}
+.rowb{margin: 10px;padding: 20px;}
+.boxes{display: flex;flex-direction: row;}

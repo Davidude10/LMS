@@ -1,54 +1,52 @@
 
-{%load static %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mentorow</title>
-    <link rel="icon" href="images/favicon.png">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://kit.fontawesome.com/95f9a0a9bb.js" crossorigin="anonymous"></script>
+    <link rel="icon" href="image/favicon.png">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    <script src="{% static 'js/login.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css'%}">
 </head>
 <body>
-
     <section id="Home">
         <nav>
-            <img src="{% static 'images/l.png' %}" alt="logo">
+        <img src="{% static 'images/l.png'%}" alt="logo">
             <div class="navigation">
                 <ul>
                     <li><a href="#Home">Home</a></li>
                     <li><a href="#Features">Features</a></li>
-                    <li><a href="mentors.html">Mentors</a></li>
-                    <li><a href="#">Blog</a></li>
                     <li><a href="contact.html">Contact</a></li>
                 </ul>
             </div>
         </nav>
-        <div class="container-fluid mt-3">
+
+        <br>
+        
+        <div class="container-fluid">
             <div class="row">
-                <div class="col">
-                    <br><br><br>
-                    <h4>#1 Software Training Institute In Kerala Mentorow!</h4>
-                    <h6>Learn From Experts <br>Grab Your Career</h6>
+                <div class="first">
+                    <img src="{% static 'images/login/main.jpg' %}">
                 </div>
-                <div class="col"></div>
-                <div class="col_1">
+                <div class="second">
                     <div class="avatar-box">
                         <div onclick="selectUserType('admin')" class="avatar">
-                            <img src="{% static '/images/login/admin.png' %}" alt="Admin">
+                            <img src="{% static 'images/login/admin.png'%}" alt="Admin">
                         </div>
                         <div onclick="selectUserType('student')" class="avatar">
-                            <img src="{% static '/images/login/student.png' %}" alt="Student">
+                            <img src="{% static 'images/login/student.png'%}" alt="Student">
                         </div>
                     </div>
                     <div class="message" id="userMessage"></div>
-                        <form id="loginForm" method="post" action="{%url 'login' %}">
-                         {% csrf_token %}
+                        <form id="loginForm" method="post">
+                        {%csrf_token%}
                             <input type="text" id="username" name="username" placeholder="User ID" required>
                             <input type="password" id="password" name="password" placeholder="Password" required>
                             <input type="submit" value="Login">
@@ -90,43 +88,45 @@
             <h1>Imbibe The Future With Our Experts</h1>
             <div class="slide-track">
                 <div class="slide">
-                    <img src="{% static '/images/login/amazon.png' %}" height="100" width="250">
+                    <img src="{% static 'images/login/amazon.png'%}" height="100" width="250">
                 </div>
                 <div class="slide">
-                    <img src="{% static 'images/login/Deloitte.png' %}" height="100" width="250">
+                    <img src="{% static 'images/login/Deloitte.png'%}" height="100" width="250">
                 </div>
                 <div class="slide">
-                    <img src="{% static 'images/login/Google.png' %}" height="100" width="250">
+                    <img src="{% static 'images/login/Google.png'%}" height="100" width="250">
                 </div>
                 <div class="slide">
-                    <img src="{% static 'images/login/ibm.png' %}" height="100" width="250">
+                    <img src="{% static 'images/login/ibm.png'%}" height="100" width="250">
                 </div>
                 <div class="slide">
-                    <img src="{% static 'images/login/ibs.webp' %}" height="100" width="380">
+                    <img src="{% static 'images/login/ibs.webp'%}" height="100" width="380">
                 </div>
                 <div class="slide">
-                    <img src="{% static '/images/login/infosys.png' %}" height="100" width="250">
+                    <img src="{% static 'images/login/infosys.png'%}" height="100" width="250">
                 </div>
                 <div class="slide">
-                    <img src="{% static '/images/login/lanware.webp' %}" height="100" width="250">
+                    <img src="{% static 'images/login/lanware.webp'%}" height="100" width="250">
                 </div>
                 <div class="slide">
-                    <img src="{% static '/images/login/tcs.png' %}" height="100" width="250">
+                    <img src="{% static 'images/login/tcs.png'%}" height="100" width="250">
                 </div>
                 <div class="slide">
-                    <img src="{% static '/images/login/wipro.png' %}" height="100" width="150">
+                    <img src="{% static 'images/login/wipro.png'%}" height="100" width="150">
                 </div>
                 <div class="slide">
-                    <img src="{% static '/images/login/vaisesika.png' %}" height="100" width="250">
+                    <img src="{% static 'images/login/vaisesika.png'%}" height="100" width="250">
                 </div>
             </div>
         </div>
     </section>
 
+    <br>
+
     <div class="container1 ">
         <div class="row">
             <div class="col1">
-                <img src="{% static 'images/l.png' %}">
+                <img src="{% static 'images/l.png'%}">
                 <h2>Contact Us</h2>
                 <p>Learn from Experts. Grab Your Career...<br>Get your questions answered about learning <br>call: +91 9012345678</p>
             </div>
@@ -135,23 +135,24 @@
                 <h2>Company</h2>
                 <ul>
                     <li><a href="about.html">About Us</a></li>
-                    <li><a href="blog.html">Blog</a></li>
                     <li><a href="privacy.html">Privacy & Policy</a></li>
-                    <li><a href="terms.html">Terms & Conditions</a></li>
                 </ul>
             </div>
 
             <div class="col3">
                 <h2>Help</h2>
                 <ul>
-                    <li><a href="userguide.html">User Guidelines</a></li>
                     <li><a href="site.html">Site Map</a></li>
                 </ul>
             </div>
         </div>
     </div>
+    
+    <div id="footer">  
+        <p>© Mentorow Technologies 2024 | Developed by Python August Batch</p>
+    </div>
 
-    <footer><p>© Mentorow Technologies 2024 | Developed by Python August Batch</p></footer>
- 
+  <script src="index.js"></script>
+
 </body>
 </html>
