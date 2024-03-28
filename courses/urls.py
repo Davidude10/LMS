@@ -13,9 +13,68 @@ urlpatterns = [
 #     path('course_info/', views.course_info, name='course_info'),
      path('new_course/', views.new_course, name='new_course'),
      path('new_module/<int:course_id>/', views.new_Module, name='new_Module'),
-     path('module/<int:module_id>/add_chapter/', views.add_chapter, name='add_chapter'),
+    #  path('module/<int:module_id>/add_chapter/', views.add_chapter, name='add_chapter'),
     
 #     path('edit_Module/<int:Module_id>/', views.edit_Module, name='edit_Module'),
 #     path('delete_Module/<int:Module_id>/', views.delete_Module, name='delete_Module'),
 #     path('Course/list/', views.Course_list, name='course_list'),
+ 
+ 
+ 
+ 
+  path("chapter/<slug>/detail/", views.chapter_single, name="chapter_detail"),
+    path("<int:pk>/chapter/add/", views.chapter_add, name="chapter_add"),
+    path("chapter/<slug>/edit/", views.chapter_edit, name="edit_chapter"),
+    path("chapter/delete/<slug>/", views.chapter_delete, name="delete_chapter"),
+ 
+ 
+ path(
+        "course/<slug>/documentations/upload/",
+        views.handle_file_upload,
+        name="upload_file_view",
+    ),
+    path(
+        "course/<slug>/documentations/<int:file_id>/edit/",
+        views.handle_file_edit,
+        name="upload_file_edit",
+    ),
+    path(
+        "course/<slug>/documentations/<int:file_id>/delete/",
+        views.handle_file_delete,
+        name="upload_file_delete",
+    ),
+    # Video uploads urls
+    path(
+        "course/<slug>/video_tutorials/upload/",
+        views.handle_video_upload,
+        name="upload_video",
+    ),
+    path(
+        "course/<slug>/video_tutorials/<video_slug>/detail/",
+        views.handle_video_single,
+        name="video_single",
+    ),
+    path(
+        "course/<slug>/video_tutorials/<video_slug>/edit/",
+        views.handle_video_edit,
+        name="upload_video_edit",
+    ),
+    path(
+        "course/<slug>/video_tutorials/<video_slug>/delete/",
+        views.handle_video_delete,
+        name="upload_video_delete",
+    ),
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  ]

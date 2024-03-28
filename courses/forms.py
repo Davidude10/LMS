@@ -52,29 +52,45 @@ class ModuleForm(forms.ModelForm):
         fields = ['course', 'title', 'module_no']
         labels = {'course': ''}
 
-class ChapterForm(forms.ModelForm):
-    file = forms.FileField(label='Upload File', required=False)
-    video = forms.FileField(label='Upload Video', required=False)
-
+class ChapterAddForm(forms.ModelForm):
     class Meta:
         model = Chapter
-        fields = ['module','title', 'chapter_number']
+        fields = ['module','title','summary']
+        exclude = ['slug']
 
-    def save(self, commit=True):
-        # Get the Chapter instance
-        chapter = super().save(commit=commit)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["title"].widget.attrs.update({"class": "form-control"})
+        
+        self.fields["summary"].widget.attrs.update({"class": "form-control"})
+        
+        
 
-        # Save related objects if Chapter instance is fully saved
-        if commit:
-            file = self.cleaned_data.get('file')
-            video = self.cleaned_data.get('video')
+    # Upload files to specific course
+class UploadFormFile(forms.ModelForm):
+    class Meta:
+        model = Upload
+        fields = (
+            "title",
+            "file",
+        )
 
-            if file:
-                upload = Upload.objects.create(title=f'File for Chapter {chapter.chapter_number}', chapter=chapter, file=file)
-                # You may want to do additional processing here
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["title"].widget.attrs.update({"class": "form-control"})
+        self.fields["file"].widget.attrs.update({"class": "form-control"})
 
-            if video:
-                upload_video = UploadVideo.objects.create(title=f'Video for Chapter {chapter.chapter_number}', chapter=chapter, video=video)
-                # You may want to do additional processing here
 
-        return chapter
+# Upload video to specific course
+class UploadFormVideo(forms.ModelForm):
+    class Meta:
+        model = UploadVideo
+        fields = (
+            "title",
+            "video",
+        )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["title"].widget.attrs.update({"class": "form-control"})
+        self.fields["video"].widget.attrs.update({"class": "form-control"})

@@ -8,6 +8,9 @@ from .utils import unique_slug_generator
 from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
+from core.models import ActivityLog
+from django.db.models.signals import pre_save, post_save, post_delete
+from django.dispatch import receiver
 
 class CourseManager(models.Manager):
     def search(self, query=None):
@@ -44,6 +47,7 @@ def log_delete_program(sender, instance, **kwargs):
 
 class Module(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    
     title = models.CharField(max_length=200, unique=False, null=True)
     date_added = models.DateTimeField(auto_now_add=True)
     module_no=models.IntegerField(default=0)
@@ -63,29 +67,37 @@ class Module(models.Model):
 
 class Chapter(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
-    title = models.CharField(max_length=200, unique=True, null=True)
+    slug = models.SlugField(blank=True, unique=True)
+    title = models.CharField(max_length=200, null=True)
+    summary = models.TextField(max_length=200, blank=True, null=True)
     chapter_number = models.IntegerField(default=0)
 
     def __str__(self):
-        return f"Chapter {self.chapter_number} of {self.module}"
-    
-    @classmethod
-    def get_chapter_count(cls):
-        chapter_count = Chapter.objects.all().count()
-        return {"C": chapter_count}
+        return self.title
 
-class ActivityLog(models.Model):
-    message = models.TextField()
-    created_at = models.DateTimeField(auto_now=True)
+    def get_absolute_url(self):
+        return reverse("courses:chapter_detail", kwargs={"slug": self.slug})
 
-    def __str__(self):
-        return f"[{self.created_at}] {self.message}"
+def chapter_pre_save_receiver(sender, instance, *args, **kwargs):
+        if not instance.slug:
+            instance.slug = unique_slug_generator(instance)
+
+pre_save.connect(chapter_pre_save_receiver, sender=Chapter)
+
+@receiver(post_save, sender=Chapter)
+def log_save(sender, instance, created, **kwargs):
+    verb = "created" if created else "updated"
+    ActivityLog.objects.create(message=f"The chapter '{instance}' has been {verb}.")
+
+@receiver(post_delete, sender=Chapter)
+def log_delete(sender, instance, **kwargs):
+    ActivityLog.objects.create(message=f"The chapter '{instance}' has been deleted.")
 
 class Upload(models.Model):
     title = models.CharField(max_length=100)
-    chapter = models.OneToOneField(Chapter, on_delete=models.CASCADE)
+    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
     file = models.FileField(
-        upload_to="course_files/",
+        upload_to="chapter_files/",
         help_text="Valid Files: pdf, docx, doc, xls, xlsx, ppt, pptx, zip, rar, 7zip",
         validators=[
             FileExtensionValidator(
@@ -104,8 +116,8 @@ class Upload(models.Model):
             )
         ],
     )
-    updated_date = models.DateTimeField(auto_now=True, null=True)
-    upload_time = models.DateTimeField(auto_now_add=True, null=True)
+    updated_date = models.DateTimeField(auto_now=True, auto_now_add=False, null=True)
+    upload_time = models.DateTimeField(auto_now=False, auto_now_add=True, null=True)
 
     def __str__(self):
         return str(self.file)[6:]
@@ -130,7 +142,7 @@ class Upload(models.Model):
         super().delete(*args, **kwargs)
 
 @receiver(post_save, sender=Upload)
-def log_save_upload(sender, instance, created, **kwargs):
+def log_save(sender, instance, created, **kwargs):
     if created:
         ActivityLog.objects.create(
             message=f"The file '{instance.title}' has been uploaded to the chapter '{instance.chapter}'."
@@ -141,7 +153,7 @@ def log_save_upload(sender, instance, created, **kwargs):
         )
 
 @receiver(post_delete, sender=Upload)
-def log_delete_upload(sender, instance, **kwargs):
+def log_delete(sender, instance, **kwargs):
     ActivityLog.objects.create(
         message=f"The file '{instance.title}' of the chapter '{instance.chapter}' has been deleted."
     )
@@ -149,36 +161,37 @@ def log_delete_upload(sender, instance, **kwargs):
 class UploadVideo(models.Model):
     title = models.CharField(max_length=100)
     slug = models.SlugField(blank=True, unique=True)
-    chapter = models.OneToOneField(Chapter, on_delete=models.CASCADE)
+    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
     video = models.FileField(
-        upload_to="course_videos/",
+        upload_to="chapter_videos/",
         help_text="Valid video formats: mp4, mkv, wmv, 3gp, f4v, avi, mp3",
         validators=[
             FileExtensionValidator(["mp4", "mkv", "wmv", "3gp", "f4v", "avi", "mp3"])
         ],
     )
     summary = models.TextField(null=True, blank=True)
-    timestamp = models.DateTimeField(auto_now_add=True, null=True)
+    timestamp = models.DateTimeField(auto_now=False, auto_now_add=True, null=True)
 
     def __str__(self):
         return str(self.title)
 
     def get_absolute_url(self):
         return reverse(
-            "video_single", kwargs={"slug": self.chapter.slug, "video_slug": self.slug}
+            "courses:video_single", kwargs={"slug": self.chapter.slug, "video_slug": self.slug}
         )
 
     def delete(self, *args, **kwargs):
         self.video.delete()
         super().delete(*args, **kwargs)
 
-@receiver(pre_save, sender=UploadVideo)
 def video_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
 
+pre_save.connect(video_pre_save_receiver, sender=UploadVideo)
+
 @receiver(post_save, sender=UploadVideo)
-def log_save_video(sender, instance, created, **kwargs):
+def log_save(sender, instance, created, **kwargs):
     if created:
         ActivityLog.objects.create(
             message=f"The video '{instance.title}' has been uploaded to the chapter {instance.chapter}."
@@ -189,7 +202,7 @@ def log_save_video(sender, instance, created, **kwargs):
         )
 
 @receiver(post_delete, sender=UploadVideo)
-def log_delete_video(sender, instance, **kwargs):
+def log_delete(sender, instance, **kwargs):
     ActivityLog.objects.create(
         message=f"The video '{instance.title}' of the chapter '{instance.chapter}' has been deleted."
     )

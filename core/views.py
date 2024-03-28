@@ -6,7 +6,7 @@ from users.decorators import admin_required,student_required
 from users.models import User, Student
 from .forms import SessionForm ,NewsAndEventsForm
 from .models import NewsAndEvents, Session
-from courses.models import ActivityLog
+
 from courses.models import Course,Module,Chapter
 
 

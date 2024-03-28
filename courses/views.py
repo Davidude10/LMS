@@ -4,14 +4,16 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from courses.models import Chapter, Upload, UploadVideo
 from .models import Course,Module
-from .forms import CourseForm, ModuleForm,ChapterForm
+from .forms import CourseForm, ModuleForm,ChapterAddForm
 from django.shortcuts import render, get_object_or_404
 from users.decorators import admin_required
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
-from users.models import Student
+from users.models import Student,User
 from django.template import loader
+from courses.forms import UploadFormFile,UploadFormVideo
+from django.contrib import messages
 
 def course_detail(request):
     courses_count = Course.objects.count()
@@ -68,40 +70,268 @@ def new_Module(request, course_id):
 
 def module_details(request, pk):
     module = Module.objects.get(id=pk)
-    chapters = Chapter.objects.filter(module=module)
+    chapter = Chapter.objects.filter(module_id=pk)
     
 
     context = {
         'module': module,
-        'chapters': chapters,
+        'chapter': chapter,
     }
 
     return render(request, 'courses/module_details.html', context)
 
 
-def add_chapter(request, module_id=None):
-    module = None
-    if module_id:
-        module = get_object_or_404(Module, id=module_id)
-    if request.method == 'POST':
-        form = ChapterForm(request.POST, request.FILES)
-        if form.is_valid():
-            chapter = form.save(commit=False)
-            if module:
-                chapter.module = module
-            if 'file' in request.FILES:
-                chapter.has_file = True
-            if 'video' in request.FILES:
-                chapter.has_video = True
-            chapter.save()
-            if module:
-                return redirect('courses:module', pk=module.id)
-            else:
-                return redirect('display_chapter', chapter_id=chapter.id)
-    else:
-        form = ChapterForm()
-    return render(request, 'courses/add_chapter.html', {'form': form, 'module': module})
+# def add_chapter(request, module_id=None):
+#     module = None
+#     if module_id:
+#         module = get_object_or_404(Module, id=module_id)
+#     if request.method == 'POST':
+#         form = ChapterForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             chapter = form.save(commit=False)
+#             if module:
+#                 chapter.module = module
+#             if 'file' in request.FILES:
+#                 chapter.has_file = True
+#             if 'video' in request.FILES:
+#                 chapter.has_video = True
+#             chapter.save()
+#             if module:
+#                 return redirect('courses:module', pk=module.id)
+#             else:
+#                 return redirect('display_chapter', chapter_id=chapter.id)
+#     else:
+#         form = ChapterForm()
+#     return render(request, 'courses/add_chapter.html', {'form': form, 'module': module})
 
-def display_chapter(request, chapter_id):
-    chapter = get_object_or_404(Chapter, pk=chapter_id)
-    return render(request, 'display-chapter.html', {'chapter': chapter})
+# def display_chapter(request, chapter_id):
+#     chapter = get_object_or_404(Chapter, pk=chapter_id)
+#     return render(request, 'display-chapter.html', {'chapter': chapter})
+
+
+
+
+
+# ########################################################
+# File Upload views
+# ########################################################
+@login_required
+@admin_required
+def handle_file_upload(request, slug):
+    chapter = Chapter.objects.get(slug=slug)
+    if request.method == "POST":
+        form = UploadFormFile(request.POST, request.FILES)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.chapter = chapter
+            obj.save()
+
+            messages.success(
+                request, (request.POST.get("title") + " has been uploaded.")
+            )
+            return redirect("courses:chapter_detail", slug=slug)
+    else:
+        form = UploadFormFile()
+    return render(
+        request,
+        "upload/upload_file_form.html",
+        {"title": "File Upload", "form": form, "chapter": chapter},
+    )
+
+
+@login_required
+@admin_required
+def handle_file_edit(request, slug, file_id):
+    chapter = Chapter.objects.get(slug=slug)
+    instance = Upload.objects.get(pk=file_id)
+    if request.method == "POST":
+        form = UploadFormFile(request.POST, request.FILES, instance=instance)
+        # file_name = request.POST.get('name')
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, (request.POST.get("title") + " has been updated.")
+            )
+            return redirect("courses:chapter_detail", slug=slug)
+    else:
+        form = UploadFormFile(instance=instance)
+
+    return render(
+        request,
+        "upload/upload_file_form.html",
+        {"title": instance.title, "form": form, "course":chapter},
+    )
+
+
+def handle_file_delete(request, slug, file_id):
+    file = Upload.objects.get(pk=file_id)
+    # file_name = file.name
+    file.delete()
+
+    messages.success(request, (file.title + " has been deleted."))
+    return redirect("courses:chapter_detail", slug=slug)
+
+
+# ########################################################
+# Video Upload views
+# ########################################################
+@login_required
+@admin_required
+def handle_video_upload(request, slug):
+    chapter = Chapter.objects.get(slug=slug)
+    if request.method == "POST":
+        form = UploadFormVideo(request.POST, request.FILES)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.chapter = chapter
+            obj.save()
+
+            messages.success(
+                request, (request.POST.get("title") + " has been uploaded.")
+            )
+            return redirect("courses:chapter_detail", slug=slug)
+    else:
+        form = UploadFormVideo()
+    return render(
+        request,
+        "upload/upload_video_form.html",
+        {"title": "Video Upload", "form": form, "chapter": chapter},
+    )
+
+
+@login_required
+# @admin_required
+def handle_video_single(request, slug, video_slug):
+    chapter = get_object_or_404(Chapter, slug=slug)
+    video = get_object_or_404(UploadVideo, slug=video_slug)
+    return render(request, "upload/video_single.html", {"video": video  , "chapter":chapter})
+
+
+@login_required
+@admin_required
+def handle_video_edit(request, slug, video_slug):
+    chapter = Chapter.objects.get(slug=slug)
+    instance = UploadVideo.objects.get(slug=video_slug)
+    if request.method == "POST":
+        form = UploadFormVideo(request.POST, request.FILES, instance=instance)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, (request.POST.get("title") + " has been updated.")
+            )
+            return redirect("courses:chapter_detail", slug=slug)
+    else:
+        form = UploadFormVideo(instance=instance)
+
+    return render(
+        request,
+        "upload/upload_video_form.html",
+        {"title": instance.title, "form": form, "chapter": chapter},
+    )
+
+
+def handle_video_delete(request, slug, video_slug):
+    video = get_object_or_404(UploadVideo, slug=video_slug)
+    # video = UploadVideo.objects.get(slug=video_slug)
+    video.delete()
+
+    messages.success(request, (video.title + " has been deleted."))
+    return redirect("courses:chapter_detail", slug=slug)
+
+
+
+
+# ########################################################
+# Chapter views
+# ########################################################
+@login_required
+def chapter_single(request, slug):
+    chapter = Chapter.objects.get(slug=slug)
+    files = Upload.objects.filter(chapter__slug=slug)
+    videos = UploadVideo.objects.filter(chapter__slug=slug)
+
+
+    return render(
+        request,
+        "courses/chapter_single.html",
+        {
+            "title": chapter.title,
+            "chapter": chapter,
+            "files": files,
+            "videos": videos,
+            "media_url": settings.MEDIA_ROOT,
+        },
+    )
+
+
+@login_required
+@admin_required
+def chapter_add(request, pk):
+    users = User.objects.all()
+    if request.method == "POST":
+        form = ChapterAddForm(request.POST)
+        chapter_name = request.POST.get("title")
+        
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, (chapter_name + " has been created.")
+            )
+            return redirect("courses:module", pk=request.POST.get("module"))
+        else:
+            messages.error(request, "Correct the error(s) below.")
+    else:
+        form = ChapterAddForm(initial={"module": Module.objects.get(pk=pk)})
+
+    return render(
+        request,
+        "courses/chapter_add.html",
+        {
+            "title": "Add Chapter",
+            "form": form,
+            "module": pk,
+            "users": users,
+        },
+    )
+
+
+@login_required
+@admin_required
+def chapter_edit(request, slug):
+    chapter = get_object_or_404(Chapter, slug=slug)
+    if request.method == "POST":
+        form = ChapterAddForm(request.POST)
+        chapter_name = request.POST.get("title")
+        
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, (chapter_name + " has been edited.")
+            )
+            return redirect("courses:module_detail", pk=request.POST.get("module"))
+        else:
+            messages.error(request, "Correct the error(s) below.")
+    else:
+        form = ChapterAddForm(instance=chapter)
+
+    return render(
+        request,
+        "courses/chapter_add.html",
+        {
+            "title": "Edit Chapter",
+            # 'form': form, 'program': pk, 'course': pk
+            "form": form,
+        },
+    )
+
+
+@login_required
+@admin_required
+def chapter_delete(request, slug):
+    chapter = Chapter.objects.get(slug=slug)
+    # course_name = course.title
+    chapter.delete()
+    messages.success(request, "Chapter " + chapter.title + " has been deleted.")
+
+    return redirect("courses:module_detail", pk=chapter.module.id)
+

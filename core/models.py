@@ -50,3 +50,12 @@ class Session(models.Model):
 
     def __str__(self):
         return self.session
+    
+
+
+class ActivityLog(models.Model):
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"[{self.created_at}]{self.message}"

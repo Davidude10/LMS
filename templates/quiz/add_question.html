@@ -1,0 +1,23 @@
+<!-- template.html -->
+
+{% extends 'base.html' %}
+{% block content %}
+    <form method="POST" id="question-form">
+        {% csrf_token %}
+        <label for="id_course">Course:</label>
+        {{ form.course }}
+        <br><br>
+        <label for="id_module">Module:</label>
+        {{ form.module }}
+        <br><br>
+        <label for="id_text">Question:</label>
+        {{ form.text }}
+        <br><br>
+        <label for="id_correct_answer">Correct Answer:</label>
+        {{ form.correct_answer }}
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+   
+{% endblock content %}

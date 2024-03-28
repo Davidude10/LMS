@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} | Learning management system{% endblock title %}
+
+
+{% block content %}
+
+
+<p class="title-1">Video upload for {{ course|truncatechars:25 }}</p>
+<div class="title-line"></div><br>
+
+{% include 'snippets/messages.html' %}
+
+<div class="row">
+<div class="col-md-8 mx-auto">
+    <div class="card">
+    <p class="form-title">Video Upload Form</p>
+    <div class="card-body">
+        <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
+            {{ form.as_p}}
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit">Upload</button>
+                <a class="btn btn-danger" href="{% url 'courses:chapter_detail' chapter.slug %}" style="float: right;">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+
+{% endblock content %}

@@ -3,6 +3,7 @@ from .forms import QuizForm, QuestionForm, ChoiceForm
 from courses.models import Course,Module,Chapter
 from django.shortcuts import render,redirect
 
+
 def Assessment_detail(request):
     if request.method == 'POST':
         quiz_form = QuizForm(request.POST)
@@ -34,7 +35,7 @@ def add_question(request):
         form = QuestionForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('quiz/Assessment_detail')  # Redirect to the quiz list page after adding the question
+            return redirect('quiz:Assessment_detail')  # Redirect to the quiz list page after adding the question
     else:
         form = QuestionForm()
-    return render(request, 'add_question.html', {'form': form})
+    return render(request, 'quiz/add_question.html', {'form': form})

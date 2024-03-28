@@ -19,8 +19,8 @@ class QuizForm(forms.ModelForm):
             self.fields['module'].queryset = Module.objects.filter(course=course)
 
 class QuestionForm(forms.ModelForm):
-    course = forms.ModelChoiceField(queryset=Course.objects.all(), disabled=True)
-    module = forms.ModelChoiceField(queryset=Module.objects.none())
+    course = forms.ModelChoiceField(queryset=Course.objects.all(), empty_label=None)
+    module = forms.ModelChoiceField(queryset=Module.objects.none(), empty_label=None)
 
     class Meta:
         model = Question
@@ -28,9 +28,8 @@ class QuestionForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(QuestionForm, self).__init__(*args, **kwargs)
-        if 'course' in kwargs:
-            course = kwargs.pop('course')
-            self.fields['module'].queryset = Module.objects.filter(course=course)
+        if self.is_bound and 'course' in self.data:
+            self.fields['module'].queryset = Module.objects.filter(course_id=self.data['course'])
 
 class ChoiceForm(forms.ModelForm):
     class Meta:
