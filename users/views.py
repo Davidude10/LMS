@@ -16,7 +16,11 @@ from .forms import StudentAddForm, ProfileUpdateForm
 from .models import User, Student 
 from .filters import  StudentFilter
 from django.http import HttpResponse
-
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.hashers import make_password
+from django.core.mail import send_mail
+import random
+import string
 
 
 from .models import Student
@@ -157,3 +161,43 @@ def delete_student(request, pk):
 def student_list(request):
     students = Student.objects.all()
     return render(request, "users/student_list.html", {"students": students})
+
+
+
+
+def forgot_password(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        email = request.POST['email']
+        
+        # Verify credentials
+        try:
+            user = User.objects.get(username=username, email=email)
+        except User.DoesNotExist:
+            return render(request, 'forgot_password.html', {'error': 'Invalid credentials'})
+        
+        # Generate new password
+        random_alphabets1 = ''.join(random.choices(string.ascii_uppercase, k=2))
+        random_numbers1 = ''.join(random.choices(string.digits, k=2))
+        random_alphabets2 = ''.join(random.choices(string.ascii_uppercase, k=2))
+        random_numbers2 = ''.join(random.choices(string.digits, k=2))
+        random_string = random_alphabets1 + random_numbers1 + random_alphabets2 + random_numbers2
+        generated_password = (
+            f"{random_string}"
+        )
+        # Update user's password
+        user.password = make_password(generated_password)
+        user.save()
+        
+        # Send email with new password
+        send_mail(
+            'Password Reset',
+            f'Your new password is: {generated_password}',
+            'from@example.com',
+            [email],
+            fail_silently=False,
+        )
+        
+        return redirect("users:login")
+    
+    return render(request, 'forgot_password.html')

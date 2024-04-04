@@ -580,3 +580,29 @@ courses */
 .qrow a{color: #000;}
 .qrow a:hover{color: blue;}
 .cm{float: right;}
+
+
+
+
+/*chapter_single*/
+
+
+.cst button{display: flex;flex-direction: row;float: left;width: auto;margin: 10px;padding: 5px;}
+.csb{border: none;font-size: 24px;background-color: white;}
+.csf{border-radius: 10px;background-color: rgb(48, 48, 255);}
+.cs{font-size: 26px; margin: 15px;}
+.ct{font-size: 22px;margin: 15px;}
+.svt{text-align: center;padding: 40px;margin: 15px;width: 98%;}
+.csvt{box-shadow: 0 0 10px rgb(156, 155, 155);margin: 15px;border-radius: 10px;width: 98%;}
+.va i{width: 20%; color: blue;}
+.svt tr:nth-child(odd){background-color: #f2f2f2;}
+.svt tr:hover{background-color: rgb(205, 201, 201);}
+.svt tr{height: 40px;}
+
+
+/* course_module*/
+.cmt button{display: flex;flex-direction: row;float: left;width: auto;margin: 10px;padding: 5px;}
+.cmb{border: none;font-size: 24px;background-color: white;}
+.cma{border-radius: 10px;background-color: rgb(48, 48, 255);}
+.cm{border-radius: 15px;border: 1px solid rgb(167, 167, 167);margin: 15px;padding: 15px;}
+.progress{border-radius: 6px;}

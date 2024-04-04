@@ -5,24 +5,29 @@
 {% endblock title %}
 
 {% block content %}
-        {% if request.user.is_admin %}
-    <div class="admin-actions">
-         <a class="btn btn-sm btn-primary" href="{% url 'courses:new_Module'  course_id=course.id %}"><i class="fa-solid fa-plus"></i> Add Module</a> 
-    </div>
-    {% endif %}
-        {% for module in modules %}
-        <div class="module"> 
-         <a href="{% url 'courses:module' pk=module.id %}">
-            <div class="container p-2 my-2 border">
-                <h6>Module {{module.module_no}}  :  {{module.title}}</h6>
-                <p>Total chapters : {{module.chapter_count}}</p>
-                <div class="progress">
-                    <div class="progress-bar progress-bar active" 
-                                        role="progressbar" aria-valuenow="{{module.progress}}" aria-valuemin="0" aria-valuemax="100" style="width:{{module.progress}}%">{{module.progress}}%
-                    </div>
+        <div class="container-fluid">
+        <div class="row">
+            <div class="cmt">
+                <a href="#"><button class="cmb" type="submit"><i class='fas fa-chevron-left'></i></button></a>
+                {% if request.user.is_admin %}
+                    <a href="{% url 'courses:new_Module'  course_id=course.id %}"><button class="cma" type="submit"><i class="material-icons">add</i>Add Module</button></a>
+                {% endif %}
+            </div>
+        </div><br>
+        <div class="row">
+            {% for module in modules %}
+                <div class="cm">
+                    <a href="{% url 'courses:module' pk=module.id %}">
+                        <h6>Module {{module.module_no}}  :  {{module.title}}</h6>
+                        <p>Total chapters : {{module.chapter_count}}</p>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar active" 
+                                                role="progressbar" aria-valuenow="{{module.progress}}" aria-valuemin="0" aria-valuemax="100" style="width:{{module.progress}}%">{{module.progress}}%
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </div>
-            </a>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
 {% endblock content %}
