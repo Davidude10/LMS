@@ -40,6 +40,7 @@
                             <a href="{% url 'courses:new_course' %}"> <button type="submit" class="addcou">Add Course</button></a>
                         </div><br>
                         <div class="row">
+                        {% if courses %}
                         {% for course in courses %}
                         
                             <div class="col-md-4">
@@ -51,6 +52,9 @@
                             </div>
                             
                            {% endfor %}
+                           {% else %}
+                           <h5> *No Courses added*</h5>
+                           {% endif %}
                             
                         </div>
                     </div>

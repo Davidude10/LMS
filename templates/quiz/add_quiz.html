@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %} Add Quiz {% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <form  method="POST"> {% csrf_token %}
+    {{ form.as_p }}
+    <a href="{% url 'quiz:add_quiz' %}"><button  class="btn btn-info">Submit</button></a>
+</form>
+</div>
+{% endblock content %}

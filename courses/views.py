@@ -334,4 +334,15 @@ def chapter_delete(request, slug):
     messages.success(request, "Chapter " + chapter.title + " has been deleted.")
 
     return redirect("courses:module_detail", pk=chapter.module.id)
-
+@login_required
+def student_course(request):
+    # Get the course assigned to the current user
+    user_course = request.user.student.course
+    
+    # Get the modules related to the user's course
+    modules = Module.objects.filter(course=user_course)
+    
+    # Pass the modules to the template context
+    context = {'modules': modules}
+    
+    return render(request, "courses/course_modules.html", context)

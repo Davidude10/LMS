@@ -31,6 +31,7 @@ class Course(models.Model):
     image=models.ImageField(upload_to="course_icon/%Y/%m/%d/", default="default.png", null=True)
     date_added = models.DateTimeField(auto_now_add=True)
     summary = models.TextField(null=True, blank=True)
+    total_quiz_score = models.FloatField(default=0)
     objects = CourseManager()
 
     def __str__(self):
@@ -51,6 +52,7 @@ class Module(models.Model):
     title = models.CharField(max_length=200, unique=False, null=True)
     date_added = models.DateTimeField(auto_now_add=True)
     module_no=models.IntegerField(default=0)
+    quiz_score = models.FloatField(default=0)
     progress = models.IntegerField(default=0)
 
     class Meta:

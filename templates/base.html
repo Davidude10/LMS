@@ -48,9 +48,9 @@
                     <p id="rcorners1"><b>{{course.title}} </b></p>
                     <ul class="nav flex-column">
                         <li class="nav-item"><a class="nav-link active" href="{% url 'home' %}"><h4>News and Events</h4></a></li>
-                        <li class="nav-item"><a class="nav-link" href=""><h4>Course Material</h4></a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'courses:student_course' %}"><h4>Course Material</h4></a></li>
                         <li class="nav-item"><a class="nav-link" href=""><h4>Chat</h4></a></li>
-                        <li class="nav-item"><a class="nav-link" href=""><h4>Course info</h4></a></li>
+                        <li class="nav-item"><a class="nav-link" href=""><h4>Profile Settings</h4></a></li>
                     </ul>
                     {% elif request.user.is_admin %}
                     <p id="rcorners1"><b></b></p>

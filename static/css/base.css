@@ -606,3 +606,49 @@ courses */
 .cma{border-radius: 10px;background-color: rgb(48, 48, 255);}
 .cm{border-radius: 15px;border: 1px solid rgb(167, 167, 167);margin: 15px;padding: 15px;}
 .progress{border-radius: 6px;}
+
+
+
+
+
+.timer{
+    float: right;
+}
+.total{
+    margin-bottom: 5px;
+}
+    input[type='radio']:checked:after {
+        width: 15px;
+        height: 15px;
+        border-radius: 15px;
+        top: -2px;
+        left: -1px;
+        position: relative;
+        background-color: #16b138;
+        content: '';
+        display: inline-block;
+        visibility: visible;
+        border: 2px solid white;
+    }
+
+    .logo {
+        position: relative;
+        bottom: 2rem;
+    }
+
+    .container-fluid {
+        height: 60px;
+    }
+
+    .head1 {
+        color: #FBAD30;
+        font-size: 2rem;
+        font-weight: bold;
+        height: 50px;
+    }
+
+    .head2 {
+        color: #EF4926;
+        font-size: 2rem;
+        font-weight: bold;
+    }

@@ -5,30 +5,24 @@ from courses import views
 app_name = 'courses'
 
 urlpatterns = [
-#     path('', views.courses, name='courses'),
      path('courses/<int:course_id>/modules/', views.course_modules, name='course_modules'),
      path('course/module/<int:pk>/', views.module_details, name='module'),
      path('course_detail/', views.course_detail, name='course_detail'),
-#     path('course/<int:pk>/info/', views.course_infos, name='course_infos'),
-#     path('course_info/', views.course_info, name='course_info'),
+   path('courses/course_modules/', views.student_course, name='student_course'),
      path('new_course/', views.new_course, name='new_course'),
      path('new_module/<int:course_id>/', views.new_Module, name='new_Module'),
-    #  path('module/<int:module_id>/add_chapter/', views.add_chapter, name='add_chapter'),
     
-#     path('edit_Module/<int:Module_id>/', views.edit_Module, name='edit_Module'),
-#     path('delete_Module/<int:Module_id>/', views.delete_Module, name='delete_Module'),
-#     path('Course/list/', views.Course_list, name='course_list'),
  
  
  
  
-  path("chapter/<slug>/detail/", views.chapter_single, name="chapter_detail"),
+   path("chapter/<slug>/detail/", views.chapter_single, name="chapter_detail"),
     path("<int:pk>/chapter/add/", views.chapter_add, name="chapter_add"),
     path("chapter/<slug>/edit/", views.chapter_edit, name="edit_chapter"),
     path("chapter/delete/<slug>/", views.chapter_delete, name="delete_chapter"),
  
  
- path(
+    path(
         "course/<slug>/documentations/upload/",
         views.handle_file_upload,
         name="upload_file_view",

@@ -29,17 +29,21 @@
                 <form  action="" method="get" id="form1" class="hidden">
                     <div class="quizz">
             <div class="add">
-                <button class="quizadd" type="submit">Add Quiz</button>
+                <a href="{% url 'quiz:add_quiz' %}"><button class="quizadd" type="button">Add Quiz</button></a>
                 <a href="{% url 'quiz:add_question' %}">
     <button class="questadd" type="button">Add Question</button>
 </a>
             </div>
             <div class="qrow">
                 <a href="">
+                {% for quiz in Quiz%}
                     <div class="row_2">
-                        <h6>Title</h6>
-                        <p class="cm">python(introduction)</p>
-                    </div>
+                    
+                        <h6>{{quiz}}</h6>
+                        <h6>{{quiz.Course}}</h6>
+                        
+                    </div>{% endfor %}
+                
                 </a>
             </div>
         </div>

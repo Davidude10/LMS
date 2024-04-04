@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container-fluid">
-        <div class="row">
+       {%if request.user.is_admin %} <div class="row">
             <div class="cst">
                 <a href="#"><button class="csb" type="submit"><i class='fas fa-chevron-left'></i></button></a>
                 <a href="{% url 'courses:upload_file_view' chapter.slug %}"><button class="csf" type="submit"><i class="material-icons">add</i>Upload new file</button></a>
                 <a href="{% url 'courses:upload_video' chapter.slug %}"><button class="csf" type="submit"><i class="material-icons">add</i>Upload new video</button></a>
             </div>
-        </div>
+        </div>{% endif %}
         <h3 class="cs">{{ chapter }}</h3>
         <p>{{ chapter.summary }}</p>
         {% include 'snippets/messages.html' %}

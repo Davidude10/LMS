@@ -15,6 +15,7 @@
             </div>
         </div><br>
         <div class="row">
+        {% if modules %}
             {% for module in modules %}
                 <div class="cm">
                     <a href="{% url 'courses:module' pk=module.id %}">
@@ -28,6 +29,9 @@
                     </a>
                 </div>
             {% endfor %}
+            {% else %}
+            <h5> *No Modules added* </h5>
+            {% endif %}
         </div>
     </div>
 {% endblock content %}

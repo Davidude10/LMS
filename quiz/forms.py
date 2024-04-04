@@ -1,58 +1,64 @@
-# quiz/forms.py
-
 from django import forms
-from .models import Question,Quiz,Choice,QuizAttempt
-from courses.models import Course, Module
+from .models import Quiz, Question
+from django.contrib import admin
+from courses.models import Course,Module
 
 class QuizForm(forms.ModelForm):
-    course = forms.ModelChoiceField(queryset=Course.objects.all(), disabled=True)
-    module = forms.ModelChoiceField(queryset=Module.objects.none())
 
-    class Meta:
-        model = Quiz
-        fields = ['course', 'module']
+    Quiz_name = forms.CharField(
+        max_length=30,
+        widget=forms.TextInput(
+            attrs={
+                "type": "text",
+                "class": "form-control",
+            }
+        ),
+        label="Quiz Name",
+    )
+    
+    Course = forms.ModelChoiceField(queryset=Course.objects.all(), empty_label=None)
+    Module = forms.ModelChoiceField(queryset=Module.objects.none(), empty_label=None)
 
     def __init__(self, *args, **kwargs):
         super(QuizForm, self).__init__(*args, **kwargs)
-        if 'course' in kwargs:
-            course = kwargs.pop('course')
-            self.fields['module'].queryset = Module.objects.filter(course=course)
+        if 'Course' in self.data:
+            try:
+                course_id = int(self.data.get('Course'))
+                print(course_id)
+                self.fields['Module'].queryset = Module.objects.filter(course_id=course_id)
+            except (ValueError, TypeError):
+                print(False)
+        elif self.instance and self.instance.Course:
+            self.fields['Module'].queryset = self.instance.Course.module_set.all()
 
+    number_of_questions = forms.IntegerField(
+        widget=forms.NumberInput(
+            attrs={
+                "type": "number",
+                "class": "form-control",
+            }
+        ),
+        label="Number of Questions",
+    )
+    
+    time = forms.CharField(
+        max_length=30,
+        widget=forms.TextInput(
+            attrs={
+                "type": "text",
+                "class": "form-control",
+            }
+        ),
+        label="Time",
+    )
+
+    class Meta:
+        model = Quiz
+        fields = ('Quiz_name','Course','Module', 'number_of_questions', 'time')
+
+    
 class QuestionForm(forms.ModelForm):
-    course = forms.ModelChoiceField(queryset=Course.objects.all(), empty_label=None)
-    module = forms.ModelChoiceField(queryset=Module.objects.none(), empty_label=None)
-
     class Meta:
         model = Question
-        fields = ['course', 'module', 'text', 'correct_answer']
-
-    def __init__(self, *args, **kwargs):
-        super(QuestionForm, self).__init__(*args, **kwargs)
-        if self.is_bound and 'course' in self.data:
-            self.fields['module'].queryset = Module.objects.filter(course_id=self.data['course'])
-
-class ChoiceForm(forms.ModelForm):
-    class Meta:
-        model = Choice
-        fields = ['text']
-
-class QuizAttemptForm(forms.ModelForm):
-    class Meta:
-        model = QuizAttempt
-        fields = []
-
-    def __init__(self, *args, **kwargs):
-        super(QuizAttemptForm, self).__init__(*args, **kwargs)
-        choices = Choice.objects.filter(question=self.instance.quiz.question_set.first())
-        for choice in choices:
-            self.fields[f'choice_{choice.pk}'] = forms.BooleanField(label=choice.text, required=False)
-
-    def clean(self):
-        cleaned_data = super().clean()
-        choices = Choice.objects.filter(question=self.instance.quiz.question_set.first())
-        selected_choices = [key for key, value in cleaned_data.items() if key.startswith('choice_') and value]
-        correct_choices = [choice.pk for choice in choices if choice.text == choice.question.correct_answer]
-        if sorted(selected_choices) == sorted(correct_choices):
-            self.instance.score = 1  # Setting score to 1 if all correct choices are selected
-        else:
-            self.instance.score = 0  # Setting score to 0 if any incorrect choice is selected
+        fields = ('Question', 'quiz')
+        

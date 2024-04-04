@@ -1,23 +1,28 @@
-<!-- template.html -->
-
 {% extends 'base.html' %}
-{% block content %}
-    <form method="POST" id="question-form">
-        {% csrf_token %}
-        <label for="id_course">Course:</label>
-        {{ form.course }}
-        <br><br>
-        <label for="id_module">Module:</label>
-        {{ form.module }}
-        <br><br>
-        <label for="id_text">Question:</label>
-        {{ form.text }}
-        <br><br>
-        <label for="id_correct_answer">Correct Answer:</label>
-        {{ form.correct_answer }}
-        <br><br>
-        <button type="submit">Submit</button>
-    </form>
+{% block title %} Add Question {% endblock %}
 
-   
-{% endblock content %}
+{% block content %}
+
+  <form action="{% url 'quiz:add_question' %}" method="POST"> {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-info">Submit</button>
+  </form>
+  <br>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Question</th>
+        <th>Quiz</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    {% for question in questions %}
+    <tr>
+      <td><a href="/quiz/add_options/{{question.id}}/">{{question.Question}}</a></td>
+      <td>{{question.quiz}}</td>
+      <td><a href="/quiz/delete_question/{{question.id}}/" class="btn btn-danger">Delete</a></td>
+    </tr>
+    {% endfor %}
+  </table>
+
+{% endblock %}
